@@ -1,17 +1,29 @@
 const oneTick = new Event('oneTick');
 let up, down, left, right = false;
-document.addEventListener('keyDown', function(e){
+document.addEventListener('keydown', function(e){
  if(e.key === "w"){
   up = true;
+  while(up){
+    moveUp();
+  }
  }
  if(e.key === "a"){
   left = true;
+  while(left){
+    moveLeft();
+  }
  }
  if(e.key === "s"){
   down = true;
+  while(down){
+    moveDown();
+  }
  }
  if(e.key === "d"){
   right = true;
+  while(right){
+    moveRIght();
+  }
  }
 });
 document.addEventListener("keyup", function(e){

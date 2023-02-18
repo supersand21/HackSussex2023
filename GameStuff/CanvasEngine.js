@@ -21,7 +21,5 @@ class CanvasEngine {
 
     }
 
-    movePlayer(direction) { // 1 - Left // 2 - Right
-
-    }
+    
 }
