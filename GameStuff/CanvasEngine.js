@@ -1,23 +1,36 @@
 class CanvasEngine {
 
     constructor(canvas) {
+        this.animStage = 0;
         this.canvas = canvas;
         this.ctx = canvas.getContext("2d");
         this.cHeight = canvas.height;
         this.cWidth = canvas.width;
         this.player = {"pos" : {"x": 0, "y": 0}, "vel": {"x": 0, "y": 0}};
+        this.spriteRef = [
+            document.getElementById("md1"),
+            document.getElementById("md2"),
+            document.getElementById("md3"),
+            document.getElementById("ms1"),
+            document.getElementById("ms2"),
+            document.getElementById("ms3")
+        ]
+
 
     }
     doThisEveryFrame() {
-
+        let spriteOrder = [this.spriteRef[0], this.spriteRef[1], this.spriteRef[2], this.spriteRef[1]]
         // Create sky and ground
         this.ctx.fillStyle = "#4bc3ea";
         this.ctx.fillRect(0, 0, this.cWidth, this.cHeight * 2 / 3);
         this.ctx.fillStyle = "#7CFC00";
         this.ctx.fillRect(0, this.cHeight * 2 / 3, this.cWidth, this.cHeight / 3);
-        this.ctx.drawImage(document.getElementById("mg1"), this.player.pos.x, 200, 100, 300)
+        this.ctx.drawImage(spriteOrder[this.animStage], this.player.pos.x, 200, 100, 300)
 
 
+        // Animation cycle has 5 stages
+        this.animStage++;
+        this.animStage = this.animStage % 4;
     }
 
     initialize = () => {
@@ -28,7 +41,7 @@ class CanvasEngine {
         this.ctx.fillRect(0, 0, this.cWidth, this.cHeight * 2 / 3);
         this.ctx.fillStyle = "#7CFC00";
         this.ctx.fillRect(0, this.cHeight * 2 / 3, this.cWidth, this.cHeight / 3);
-        this.ctx.drawImage(document.getElementById("mg1"), 100, 100, 100, 300)
+        this.ctx.drawImage(document.getElementById("md1"), 100, 100, 100, 300)
         this.startInputListeners();
         document.addEventListener("oneTick", () => {this.doThisEveryFrame()})
 
@@ -66,7 +79,7 @@ class CanvasEngine {
             document.dispatchEvent(oneTick);
         }
         console.log("this works");
-        setInterval(tick, 33.33);
+        setInterval(tick, 100);
     }
 
 }

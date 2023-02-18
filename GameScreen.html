@@ -4,20 +4,23 @@
  <!-- Import other various files -->
  <script src="GameStuff/CanvasEngine.js"></script>
  <link rel="stylesheet" href="Style.css"/>
- <img src="Images/manDribble1.png" id="mg1" hidden>
+ <img src="Images/manDribble1.png" id="md1" hidden>
+ <img src="Images/manDribble2.png" id="md2" hidden>
+ <img src="Images/manDribble3.png" id="md3" hidden>
+ <img src="Images/manShoot1.png" id="ms1" hidden>
+ <img src="Images/manShoot2.png" id="ms2" hidden>
+ <img src="Images/manShoot3.png" id="ms3" hidden>
 
  <script>
   // ---------------- THIS IS THE MAIN GAME FUNCTION ---------------- //
-
 
   setTimeout(() => { // Wait for the rest of the game to load before the canvas element is referenced.
    let canvas = document.getElementById("gameCanvas");
    let engine = new CanvasEngine(canvas);
 
    engine.initialize();
-   
 
-  }, 500)
+  }, 1000)
 
  </script>
 
