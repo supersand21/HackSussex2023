@@ -8,18 +8,34 @@ class CanvasEngine {
         this.player = {"pos" : {"x": 0, "y": 0}, "vel": {"x": 0, "y": 0}};
 
     }
+    doThisEveryFrame() {
+
+        // Create sky and ground
+        this.ctx.fillStyle = "#4bc3ea";
+        this.ctx.fillRect(0, 0, this.cWidth, this.cHeight * 2 / 3);
+        this.ctx.fillStyle = "#7CFC00";
+        this.ctx.fillRect(0, this.cHeight * 2 / 3, this.cWidth, this.cHeight / 3);
+        this.ctx.drawImage(document.getElementById("mg1"), this.player.pos.x, 200, 100, 300)
+
+
+    }
 
     initialize = () => {
         console.log("creating world!");
 
         // Create sky and ground
         this.ctx.fillStyle = "#4bc3ea";
-        this.ctx.fillRect(0, 0, this.cWidth, this.cHeight*2/3);
+        this.ctx.fillRect(0, 0, this.cWidth, this.cHeight * 2 / 3);
         this.ctx.fillStyle = "#7CFC00";
-        this.ctx.fillRect(0, this.cHeight*2/3, this.cWidth, this.cHeight/3);
+        this.ctx.fillRect(0, this.cHeight * 2 / 3, this.cWidth, this.cHeight / 3);
+        this.ctx.drawImage(document.getElementById("mg1"), 100, 100, 100, 300)
         this.startInputListeners();
+        document.addEventListener("oneTick", () => {this.doThisEveryFrame()})
+
 
     }
+
+
 
     startInputListeners() { // Start all key input event listeners
         let cursedRef = this;
@@ -40,17 +56,17 @@ class CanvasEngine {
         });
 
         document.addEventListener("oneTick", function(e){
-            console.table(cursedRef.player.pos)
-            cursedRef.player.pos.x -= keyPressed.a && cursedRef.player.pos.x>=0 ? 1 : 0;
-            cursedRef.player.pos.x += keyPressed.d && cursedRef.player.pos.x<=cursedRef.cWidth ? 1 : 0;
-            cursedRef.player.pos.y -= keyPressed.w && cursedRef.player.pos.y>=0 ? 1 : 0;
-            cursedRef.player.pos.y += keyPressed.s && cursedRef.player.pos.y<=cursedRef.cHeight ? 1 : 0;
+            //console.table(cursedRef.player.pos)
+            cursedRef.player.pos.x -= keyPressed.a && cursedRef.player.pos.x>=0 ? 2 : 0;
+            cursedRef.player.pos.x += keyPressed.d && cursedRef.player.pos.x<=cursedRef.cWidth ? 2 : 0;
+            cursedRef.player.pos.y -= keyPressed.w && cursedRef.player.pos.y>=0 ? 2 : 0;
+            cursedRef.player.pos.y += keyPressed.s && cursedRef.player.pos.y<=cursedRef.cHeight ? 2 : 0;
         })
         function tick() {
             document.dispatchEvent(oneTick);
         }
         console.log("this works");
-        setInterval(tick, 100);
+        setInterval(tick, 33.33);
     }
 
 }
