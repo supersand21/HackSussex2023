@@ -41,10 +41,10 @@ class CanvasEngine {
 
         document.addEventListener("oneTick", function(e){
             console.table(cursedRef.player.pos)
-            cursedRef.player.pos.x -= keyPressed.a ? 1 : 0;
-            cursedRef.player.pos.x += keyPressed.d ? 1 : 0;
-            cursedRef.player.pos.y += keyPressed.s ? 1 : 0;
-            cursedRef.player.pos.y -= keyPressed.w ? 1 : 0;
+            cursedRef.player.pos.x -= keyPressed.a && cursedRef.player.pos.x>=0 ? 1 : 0;
+            cursedRef.player.pos.x += keyPressed.d && cursedRef.player.pos.x<=cursedRef.cWidth ? 1 : 0;
+            cursedRef.player.pos.y -= keyPressed.w && cursedRef.player.pos.y>=0 ? 1 : 0;
+            cursedRef.player.pos.y += keyPressed.s && cursedRef.player.pos.y<=cursedRef.cHeight ? 1 : 0;
         })
         function tick() {
             document.dispatchEvent(oneTick);
