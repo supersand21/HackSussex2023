@@ -26,7 +26,16 @@ class CanvasEngine {
         this.ctx.fillStyle = "#7CFC00";
         this.ctx.fillRect(0, this.cHeight * 2 / 3, this.cWidth, this.cHeight / 3);
         this.ctx.drawImage(spriteOrder[this.animStage], this.player.pos.x, 200, 100, 300)
-
+        this.ctx.drawImage(document.getElementById("hoop"), 900, 100, 100, 100);
+        if(this.animStage==0){
+            this.ctx.drawImage(document.getElementById("ball"),this.player.pos.x+80, 300, 50, 50);
+        } else if(this.animStage==1){
+            this.ctx.drawImage(document.getElementById("ball"),this.player.pos.x+80, 375, 50, 50);
+        } else if(this.animStage==2){
+            this.ctx.drawImage(document.getElementById("ball"),this.player.pos.x+80, 450, 50, 50);
+        } else if(this.animStage==3){
+            this.ctx.drawImage(document.getElementById("ball"),this.player.pos.x+80, 375, 50, 50);
+        }
 
         // Animation cycle has 5 stages
         this.animStage++;
@@ -42,6 +51,7 @@ class CanvasEngine {
         this.ctx.fillStyle = "#7CFC00";
         this.ctx.fillRect(0, this.cHeight * 2 / 3, this.cWidth, this.cHeight / 3);
         this.ctx.drawImage(document.getElementById("md1"), 100, 100, 100, 300)
+        this.ctx.drawImage(document.getElementById("hoop"), 900, 100, 100, 100);
         this.startInputListeners();
         document.addEventListener("oneTick", () => {this.doThisEveryFrame()})
 
