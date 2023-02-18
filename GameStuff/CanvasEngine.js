@@ -19,22 +19,18 @@ class CanvasEngine {
         ]
         this.hoop = {"x": 900, "y": 100}
         this.sign = 1;
-
-
     }
     doThisEveryFrame() {
         let dribbleOrder = [this.spriteRef[0], this.spriteRef[1], this.spriteRef[2], this.spriteRef[1]];
         let throwOrder = [this.spriteRef[0], this.spriteRef[3], this.spriteRef[4], this.spriteRef[5], this.spriteRef[4], this.spriteRef[3], this.spriteRef[0], this.spriteRef[1]];
 
-        let spriteOrder = [this.spriteRef[0], this.spriteRef[1], this.spriteRef[2], this.spriteRef[1]];
-        this.confetti();
         // Create sky and ground
         this.ctx.fillStyle = "#4bc3ea";
         this.ctx.fillRect(0, 0, this.cWidth, this.cHeight * 2 / 3);
         this.ctx.fillStyle = "#7CFC00";
         this.ctx.fillRect(0, this.cHeight * 2 / 3, this.cWidth, this.cHeight / 3);
 
-        this.ctx.drawImage(document.getElementById("hoop"), 900, 100, 100, 100);
+        this.ctx.drawImage(document.getElementById("hoop"), this.hoop.x, this.hoop.y, 100, 100);
 
 
         console.log(this.animStage)
@@ -64,32 +60,32 @@ class CanvasEngine {
             else if(this.animStage===1) this.ctx.drawImage(this.spriteRef[6],this.player.pos.x+80, 375, 50, 50);
             else if(this.animStage===2) this.ctx.drawImage(this.spriteRef[6],this.player.pos.x+80, 450, 50, 50);
             else if(this.animStage===3) this.ctx.drawImage(this.spriteRef[6],this.player.pos.x+80, 375, 50, 50);
+            this.sign+=1;
         }
         this.sign = this.sign % 2;
         let number = Math.floor(Math.random() * 60);
-        if(this.sign == 0 && this.hoop.x <= this.cWidth-(number+125)){
+        if(this.sign === 0 && this.hoop.x <= this.cWidth-(number+125)){
             this.hoop.x += number;
-        } else if(this.sign == 1 && this.hoop.x >= number+25) {
+        } else if(this.sign === 1 && this.hoop.x >= number+25) {
             this.hoop.x -= number;
         }
         // Animation cycle has 5 stages
         this.animStage++;
         this.animStage = this.animStage % 4;
+
+
+        clearInterval(this.intervalReference);
+        this.confetti();
     }
 
     initialize = () => {
         console.log("creating world!");
 
-
         // Create sky and ground
         this.doThisEveryFrame()
         this.startInputListeners();
         document.addEventListener("oneTick", () => {this.doThisEveryFrame()})
-
-
     }
-
-
 
     startInputListeners() { // Start all key input event listeners
         let cursedRef = this;
@@ -130,53 +126,29 @@ class CanvasEngine {
             document.dispatchEvent(oneTick);
         }
         console.log("this works");
-        this.intervalReference = setInterval(tick, 100);
-    }
-    confettiRain(array){
-        for(let i = 0; i < array.length; i++){
-            let fallAmount = Math.floor(Math.random() * 10);
-            array[i, 4] += fallAmount;
-            let element = array[i];
-            console.log(element);
-            this.ctx.fillStyle = "red";
-            this.ctx.fillRect(element[1], element[0], element[3], element[2])
-        }
+        this.intervalReference = setInterval(tick, 1000);
     }
 
-     confetti(){
-        let cursed = this
-        clearInterval(this.intervalReference);
+    confetti(){
+
         console.log("this works");
-        console.log("ran");
         let array2d = [[]]
-        let number = Math.floor(Math.random() * (160 - 50 + 1))+ 50;
+        let number = 5000;
         let colours = ["red", "green", "yellow", "blue"];
+
         for(let i = 0; i<number; i++){
-            let randomX = Math.floor(Math.random() * 1000);
+            let randomX = Math.floor(Math.random() * 1100);
             let randomHeight = Math.floor(Math.random() * 2) + 1;
             let randomWidth = Math.floor(Math.random() * 2) + 1;
             let colour =  colours[Math.floor(Math.random() * 4)];
-            console.log(colour)
-            array2d[i] = [0, randomX, randomHeight, randomWidth, colour];
-            console.log(array2d[i])
+            let fallAmount = Math.floor(Math.random() * 600);
+            array2d[i] = [fallAmount, randomX, randomHeight, randomWidth, colour];
         }
-        const tickNew = new Event('tickNew');
-        function tick1() {
-            document.dispatchEvent(tickNew);
-            //this.confettiRain(array2d);
-            for(let i = 0; i < array2d.length; i++){
-                let fallAmount = Math.floor(Math.random() * 10);
-                array2d[i][0] += fallAmount;
-                console.log(fallAmount);
-                let element = array2d[i];
-                console.log(element);
-                cursed.ctx.fillStyle = "red";
-                cursed.ctx.fillRect(array2d[i][1], array2d[i][0], array2d[i][3], array2d[i][2])
-                cursed.ctx.fillStyle = "#4bc3ea";
-                cursed.ctx.fillRect(0, 0, cursed.cWidth, cursed.cHeight * 2 / 3);
-            }
+
+        for(let i = 0; i < array2d.length; i++) {
+            this.ctx.fillStyle = array2d[i][4];
+            this.ctx.fillRect(array2d[i][1], array2d[i][0], array2d[i][3], array2d[i][2])
         }
-        tick1();
-        //setInterval(tick1, 1000);
-       }
+    }
+
 }
