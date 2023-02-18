@@ -1,5 +1,33 @@
-<!DOCTYPE HTML>
-<main>
- <div src="index.html" width="">
- </div>
-</main>
+<!DOCTYPE html>
+<html lang="en"> <!-- This is how to do comments in HTML btw -->
+<head>
+ <!-- Import other various files -->
+ <script src = "GameStuff/main.js"></script>
+ <script src="GameStuff/CanvasEngine.js"></script>
+ <link rel="stylesheet" href="Style.css"/>
+ <script>
+  // ---------------- THIS IS THE MAIN GAME FUNCTION ---------------- //
+
+
+  setTimeout(() => { // Wait for the rest of the game to load before the canvas element is referenced.
+   let canvas = document.getElementById("gameCanvas");
+   let engine = new CanvasEngine(canvas);
+
+   engine.initialize();
+
+  }, 500)
+
+ </script>
+
+ <meta charset="UTF-8">
+ <title>Basket Baller</title>
+</head>
+<body style="background-color: black; color: gold;">
+
+<div style="text-align: center;">
+ <h1 style="margin: 30px;">Basket Ball</h1>
+ <canvas id="gameCanvas" width="1100" height="600"></canvas>
+</div>
+
+</body>
+</html>
