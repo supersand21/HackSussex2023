@@ -3,7 +3,7 @@
     position: absolute;
     font-size: xx-large;
     color: gold;
-    top: 25%;
+    top: 400px;
     left: 50%;
     -ms-transform: translate(-50%, -50%);
     transform: translate(-50%, -50%);
@@ -20,5 +20,6 @@
     color: grey;
 }
 .footer{
-    margin-top: 40%;
+    position: absolute;
+    top: 94%;
 }
