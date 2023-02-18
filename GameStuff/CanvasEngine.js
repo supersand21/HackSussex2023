@@ -15,7 +15,13 @@ class CanvasEngine {
         this.ctx.fillRect(0, 0, this.cWidth, this.cHeight*2/3);
         this.ctx.fillStyle = "#7CFC00";
         this.ctx.fillRect(0, this.cHeight*2/3, this.cWidth, this.cHeight/3);
+    }
 
+    startInputListeners() { // Start all key input event listeners
+
+    }
+
+    movePlayer(direction) { // 1 - Left // 2 - Right
 
     }
 }
