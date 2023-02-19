@@ -8,6 +8,7 @@ class CanvasEngine {
         this.throwState = 0;
         this.animStage = 0;
         this.player = {"pos" : {"x": 0, "y": 0}, "vel": {"x": 0, "y": 0, "maxV": 20}};
+        this.ball = {"pos" : {"x": 0, "y": 0}, "vel": {"x": 0, "y": 0}};
         this.spriteRef = [
             document.getElementById("md1"),
             document.getElementById("md2"),
@@ -19,6 +20,8 @@ class CanvasEngine {
         ]
         this.hoop = {"x": 900, "y": 100}
         this.sign = 1;
+        this.winCondition = false;
+        this.mPos = [0, 0];
     }
     doThisEveryFrame() {
         let dribbleOrder = [this.spriteRef[0], this.spriteRef[1], this.spriteRef[2], this.spriteRef[1]];
@@ -33,9 +36,6 @@ class CanvasEngine {
         this.ctx.drawImage(document.getElementById("hoop"), this.hoop.x, this.hoop.y, 100, 100);
 
 
-        console.log(this.animStage)
-        console.log(this.throwState)
-
         if((this.throwState === 1  && this.animStage === 0) || this.throwState === 2) { // Throw animation stage 1
             this.ctx.drawImage(throwOrder[this.animStage], this.player.pos.x, 200, 100, 300)
             this.throwState = this.animStage === 3 ? 3 : 2;
@@ -46,13 +46,34 @@ class CanvasEngine {
             else if(this.animStage===3) this.ctx.drawImage(this.spriteRef[6],this.player.pos.x-30, 190, 50, 50);
 
         } else if(this.throwState === 3) { // Throw animation stage 2
-            this.ctx.drawImage(throwOrder[4 + this.animStage], this.player.pos.x, 200, 100, 300)
+            this.ctx.drawImage(throwOrder[4], this.player.pos.x, 200, 100, 300)
+            this.ctx.drawImage(this.spriteRef[6],this.player.pos.x, 170, 50, 50); // Ball
             this.throwState = 4;
-
-            if(this.animStage===0) this.ctx.drawImage(this.spriteRef[6],this.player.pos.x, 170, 50, 50);
 
         } else if(this.throwState === 4) { // Throw animation stage 3
 
+            this.ctx.drawImage(throwOrder[4 + this.animStage], this.player.pos.x, 200, 100, 300) // Player
+            this.ball.pos.y = 170;
+            this.ball.pos.x = this.player.pos.x;
+            this.ball.vel.x = this.player.vel.x + (this.mPos.x-this.player.pos.x)/10;
+            this.ball.vel.y = (this.mPos.y - 200)/3.5;
+            this.ctx.drawImage(this.spriteRef[6],this.ball.pos.x, this.ball.pos.y, 50, 50); // Ball
+            this.throwState = 5;
+            console.log(this.mPos.y)
+            console.log(this.ball.vel);
+
+
+        } else if(this.throwState > 4) { // Throw animation stage 4
+            this.ctx.drawImage(dribbleOrder[this.animStage % 2], this.player.pos.x, 200, 100, 300) // Player
+            let gravity = 8;
+            this.ball.pos.y += this.ball.vel.y;
+            this.ball.pos.x += this.ball.vel.x;
+            this.ball.vel.y += gravity;
+
+            this.ctx.drawImage(this.spriteRef[6],this.ball.pos.x, this.ball.pos.y, 50, 50); // Ball
+            if(this.throwState === 5) setTimeout(() => {
+                this.throwState = 0;
+            }, 3000)
 
         } else { // Dribble animation
             this.ctx.drawImage(dribbleOrder[this.animStage], this.player.pos.x, 200, 100, 300)
@@ -73,9 +94,10 @@ class CanvasEngine {
         this.animStage++;
         this.animStage = this.animStage % 4;
 
-
-        clearInterval(this.intervalReference);
-        this.confetti();
+        if(this.winCondition) {
+            clearInterval(this.intervalReference);
+            this.confetti();
+        }
     }
 
     initialize = () => {
@@ -97,8 +119,8 @@ class CanvasEngine {
             if(e.key === "a") keyPressed.a = true;
             if(e.key === "s") keyPressed.s = true;
             if(e.key === "d") keyPressed.d = true;
-            if(e.key === "c") keyPressed.c = true
-            if(e.key === " ") cursedRef.throwState = 1;
+            if(e.key === "c") keyPressed.c = true;
+            if(e.key === " ") cursedRef.throwState = cursedRef.throwState === 0 ? 1 : 0;
 
         });
         document.addEventListener("keyup", function(e){
@@ -107,6 +129,10 @@ class CanvasEngine {
             if (e.key === "s") keyPressed.s = false;
             if (e.key === "d") keyPressed.d = false;
             if (e.key === "c") keyPressed.c = false;
+        });
+        this.canvas.addEventListener('mousemove', function(e) {
+            let rect = cursedRef.canvas.getBoundingClientRect();
+            cursedRef.mPos = {x: e.clientX - rect.left, y: e.clientY - rect.top};
         });
 
         document.addEventListener("oneTick", function(e){
@@ -125,13 +151,11 @@ class CanvasEngine {
         function tick() {
             document.dispatchEvent(oneTick);
         }
-        console.log("this works");
-        this.intervalReference = setInterval(tick, 1000);
+
+        this.intervalReference = setInterval(tick, 100);
     }
 
     confetti(){
-
-        console.log("this works");
         let array2d = [[]]
         let number = 5000;
         let colours = ["red", "green", "yellow", "blue"];
