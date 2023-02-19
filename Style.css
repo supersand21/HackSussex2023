@@ -23,3 +23,22 @@
     position: absolute;
     top: 94%;
 }
+.resetButton{
+    font-size: large;
+    position:relative;
+    color: gold;
+    background-color: #181a1b;
+    width:100px;
+    outline-style: double;
+    outline-width: 8px;
+    outline-color: invert;
+}
+.homeButton{
+    font-size: large;
+    color: gold;
+    background-color: #181a1b;
+    width:100px;
+    outline-style: double;
+    outline-width: 8px;
+    outline-color: invert;
+}

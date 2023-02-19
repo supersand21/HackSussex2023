@@ -22,11 +22,11 @@ class CanvasEngine {
         this.sign = 1;
         this.winCondition = false;
         this.mPos = [0, 0];
+        this.score = 0;
     }
     doThisEveryFrame() {
         let dribbleOrder = [this.spriteRef[0], this.spriteRef[1], this.spriteRef[2], this.spriteRef[1]];
         let throwOrder = [this.spriteRef[0], this.spriteRef[3], this.spriteRef[4], this.spriteRef[5], this.spriteRef[4], this.spriteRef[3], this.spriteRef[0], this.spriteRef[1]];
-
         // Create sky and ground
         this.ctx.fillStyle = "#4bc3ea";
         this.ctx.fillRect(0, 0, this.cWidth, this.cHeight * 2 / 3);
@@ -67,10 +67,13 @@ class CanvasEngine {
             this.ctx.drawImage(dribbleOrder[this.animStage % 2], this.player.pos.x, 200, 100, 300) // Player
             let gravity = 8;
             this.ball.pos.y += this.ball.vel.y;
-            this.ball.pos.x += this.ball.vel.x;
+            this.ball.pos.x += 1.5*this.ball.vel.x;
             this.ball.vel.y += gravity;
 
-            this.ctx.drawImage(this.spriteRef[6],this.ball.pos.x, this.ball.pos.y, 50, 50); // Ball
+            this.ctx.drawImage(this.spriteRef[6],this.ball.pos.x, this.ball.pos.y, 50, 50); // Ball 
+            if(this.hoop.y-20<this.ball.pos.y && this.ball.pos.y<this.hoop.y+20 && this.hoop.x-20<this.ball.pos.x && this.ball.pos.x<this.hoop.x+75 && this.ball.vel.y>=0){
+                this.score += Math.floor((this.hoop.x-this.player.pos.x)/100);
+            }
             if(this.throwState === 5) setTimeout(() => {
                 this.throwState = 0;
             }, 3000)
@@ -81,21 +84,28 @@ class CanvasEngine {
             else if(this.animStage===1) this.ctx.drawImage(this.spriteRef[6],this.player.pos.x+80, 375, 50, 50);
             else if(this.animStage===2) this.ctx.drawImage(this.spriteRef[6],this.player.pos.x+80, 450, 50, 50);
             else if(this.animStage===3) this.ctx.drawImage(this.spriteRef[6],this.player.pos.x+80, 375, 50, 50);
-            this.sign+=1;
+            this.sign++;
         }
+        this.ctx.font = "50px Arial";
+        this.ctx.fillStyle = "gold"
+        this.ctx.fillText("Score: " +this.score, 100, 100);
+
         this.sign = this.sign % 2;
-        let number = Math.floor(Math.random() * 60);
+        /*let number = Math.floor(Math.random() * 60);
         if(this.sign === 0 && this.hoop.x <= this.cWidth-(number+125)){
             this.hoop.x += number;
         } else if(this.sign === 1 && this.hoop.x >= number+25) {
             this.hoop.x -= number;
-        }
+        }*/ 
         // Animation cycle has 5 stages
         this.animStage++;
         this.animStage = this.animStage % 4;
 
-        if(this.winCondition) {
+        if(this.score>=30) {
             clearInterval(this.intervalReference);
+            this.ctx.font = "60px Arial";
+            this.ctx.fillStyle = "red"
+            this.ctx.fillText("YOU LOSE", 500, 500);
             this.confetti();
         }
     }
