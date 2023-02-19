@@ -67,7 +67,7 @@ class CanvasEngine {
             this.ctx.drawImage(dribbleOrder[this.animStage % 2], this.player.pos.x, 200, 100, 300) // Player
             let gravity = 8;
             this.ball.pos.y += this.ball.vel.y;
-            this.ball.pos.x += 1.5*this.ball.vel.x;
+            this.ball.pos.x += this.ball.vel.x;
             this.ball.vel.y += gravity;
 
             this.ctx.drawImage(this.spriteRef[6],this.ball.pos.x, this.ball.pos.y, 50, 50); // Ball 
@@ -91,17 +91,17 @@ class CanvasEngine {
         this.ctx.fillText("Score: " +this.score, 100, 100);
 
         this.sign = this.sign % 2;
-        /*let number = Math.floor(Math.random() * 60);
+        let number = Math.floor(Math.random() * 60);
         if(this.sign === 0 && this.hoop.x <= this.cWidth-(number+125)){
             this.hoop.x += number;
-        } else if(this.sign === 1 && this.hoop.x >= number+25) {
+        } else if(this.sign === 1 && this.hoop.x >= number+250) {
             this.hoop.x -= number;
-        }*/ 
+        }
         // Animation cycle has 5 stages
         this.animStage++;
         this.animStage = this.animStage % 4;
 
-        if(this.score>=30) {
+        if(this.score>=20) {
             clearInterval(this.intervalReference);
             this.ctx.font = "60px Arial";
             this.ctx.fillStyle = "red"
