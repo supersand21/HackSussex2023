@@ -72,7 +72,7 @@ class CanvasEngine {
 
             this.ctx.drawImage(this.spriteRef[6],this.ball.pos.x, this.ball.pos.y, 50, 50); // Ball 
             if(this.hoop.y-20<this.ball.pos.y && this.ball.pos.y<this.hoop.y+20 && this.hoop.x-20<this.ball.pos.x && this.ball.pos.x<this.hoop.x+75 && this.ball.vel.y>=0){
-                this.score += Math.floor((this.hoop.x-this.player.pos.x)/100);
+                this.score += Math.abs(Math.floor((this.hoop.x-this.player.pos.x)/100));
             }
             if(this.throwState === 5) setTimeout(() => {
                 this.throwState = 0;
